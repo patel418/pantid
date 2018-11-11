@@ -89,4 +89,4 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-FILES_STORE = "/Users/Simron/ds/examples/pants/scrapy/bot/output
+#FILES_STORE = "/Users/Simron/ds/examples/pants/scrapy/bot/output

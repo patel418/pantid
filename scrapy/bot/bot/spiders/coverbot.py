@@ -65,13 +65,19 @@ class Bot(scrapy.Spider):
 
 	def parse(self, response): 
 		body = Selector(text=response.body) 
-		images = body.css('img.image-section__image').extract() 
+		print ("body: %s" % (body))
+		images = body.css('img.product-media _img_imageLoaded').extract() 
+		
+		print ("images: %s" % (images))
+		
 		# body.css().extract() returns a list which might be empty 
+
 		for image in images: 
 			img_url = Bot.src_extractor.findall(image)[0] 
 			tags = [tag.replace(',', '').lower() 
 			for tag in Bot.tags_extractor.findall(image)[0].split(' ')] 
 			print img_url, tags 
+			print "hello"
 		link_extractor = LinkExtractor(allow=Bot.url_matcher) 
 		next_links = [link.url for link in link_extractor.extract_links(response) if not self.is_extracted(link.url)] 
 		# Crawl the filtered links 
