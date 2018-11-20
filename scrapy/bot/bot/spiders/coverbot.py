@@ -62,30 +62,10 @@ class Bot(scrapy.Spider):
 		return True
 
 	def parse(self, response): 
-		for image in response.css('body main div.sidebar-plus-content div.image-container a img::attr(src)').extract():
-		#for image in response.css('img::attr(src)').extract():
-			#image = image[2: len(image)]
+		count = 0
+		for image in response.css('body main div.sidebar-plus-content ul img::attr(data-altimage)').extract():	
+			count = count+1
 			add = "https:"
 			image = add + image
-			#item['image_urls'] = image
-			yield ImgData(image_urls=[image])#scrapy.Request(image)
-		'''body = Selector(text=response.body) 
-		print ("body: %s" % (body))
-		images = body.css('img.product-media _img_imageLoaded').extract() 
-		
-		print (type(images))
-		#print ("images: %s" % (images))
-		
-		# body.css().extract() returns a list which might be empty 
-
-		for image in images: 
-			img_url = Bot.src_extractor.findall(image)[0] 
-			tags = [tag.replace(',', '').lower() 
-			for tag in Bot.tags_extractor.findall(image)[0].split(' ')] 
-			print img_url, tags 
-			print "hello"
-		link_extractor = LinkExtractor(allow=Bot.url_matcher) 
-		next_links = [link.url for link in link_extractor.extract_links(response) if not self.is_extracted(link.url)] 
-		# Crawl the filtered links 
-		for link in next_links: 
-			yield scrapy.Request(link, self.parse)'''
+			print count
+			yield ImgData(image_urls=[image])
