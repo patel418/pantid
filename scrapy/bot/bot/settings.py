@@ -66,7 +66,8 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'bot.pipelines.BotPipeline': 300,
-    'scrapy.contrib.pipeline.images.FilesPipeline': 1
+    'scrapy.contrib.pipeline.images.FilesPipeline': 1,
+    'scrapy.pipelines.images.ImagesPipeline': 1
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -90,3 +91,4 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 #FILES_STORE = "/Users/Simron/ds/examples/pants/scrapy/bot/output
+IMAGES_STORE="/Users/Simron/ds/examples/pants/scrapy/bot/bot/images"

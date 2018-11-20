@@ -6,12 +6,8 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-
-
 class BotItem(scrapy.Item):
-    # define the fields for your item here like:
-    name = scrapy.Field()
-    color = scrapy.Field()
-    file_urls = scrapy.Field()
-    files = scrapy.Field()
-    #pass
+	pass
+class ImgData(scrapy.Item):
+	image_urls=scrapy.Field()
+	images=scrapy.Field()

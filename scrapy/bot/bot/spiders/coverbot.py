@@ -22,28 +22,26 @@ class Bot(scrapy.Spider):
 
 import scrapy
 import re
+from scrapy.item import Item
+from bot.items import ImgData
 from scrapy.linkextractor import LinkExtractor
 from scrapy.selector import Selector 
 class Bot(scrapy.Spider): 
 	name = "pant-pic-find" 
-	src_extractor = re.compile('src="([^"]*)"')
+	#src_extractor = re.compile('src="([^"]*)"')
 	tags_extractor = re.compile('alt="([^"]*)"')
 	# Define the regex we'll need to filter the returned links
 	url_matcher = re.compile('^https:\/\/www\.zara\.com\/us/en') 
 	# Create a set that'll keep track of ids we've crawled
 	crawled_ids = set()
 	def start_requests(self):
-		url = "https://www.zara.com/us/en/man-jeans-slim-l675.html?v1=1079309"
+		#url = "https://www.zara.com/us/en/man-jeans-slim-l675.html?v1=1079309"
+		url = "https://www2.hm.com/en_us/men/products/jeans.html"
 		#url = "https://www.pexels.com/"
 		yield scrapy.Request(url, self.parse)
 
-	'''def parse(self, response):
-		body = Selector(text=response.body) 
-		link_extractor = LinkExtractor(allow=PexelsScraper.url_matcher) 
-		next_links = [link.url for link in link_extractor.extract_links(response) if not self.is_extracted(link.url)]
-		# Crawl the filtered links 
-		for link in next_links:
-			yield scrapy.Request(link, self.parse)'''
+	
+	
 	def is_extracted(self, url):
 	# Image urls are of type: https://www.pexels.com/photo/asphalt-blur-clouds-dawn-392010/
 		#print ("***url about to be split: %s " % (url))
@@ -64,11 +62,19 @@ class Bot(scrapy.Spider):
 		return True
 
 	def parse(self, response): 
-		body = Selector(text=response.body) 
+		for image in response.css('body main div.sidebar-plus-content div.image-container a img::attr(src)').extract():
+		#for image in response.css('img::attr(src)').extract():
+			#image = image[2: len(image)]
+			add = "https:"
+			image = add + image
+			#item['image_urls'] = image
+			yield ImgData(image_urls=[image])#scrapy.Request(image)
+		'''body = Selector(text=response.body) 
 		print ("body: %s" % (body))
 		images = body.css('img.product-media _img_imageLoaded').extract() 
 		
-		print ("images: %s" % (images))
+		print (type(images))
+		#print ("images: %s" % (images))
 		
 		# body.css().extract() returns a list which might be empty 
 
@@ -82,22 +88,4 @@ class Bot(scrapy.Spider):
 		next_links = [link.url for link in link_extractor.extract_links(response) if not self.is_extracted(link.url)] 
 		# Crawl the filtered links 
 		for link in next_links: 
-			yield scrapy.Request(link, self.parse)
-	'''
-	def start_requests(self):
-        	urls = [
-            'http://quotes.toscrape.com/page/1/',
-            'http://quotes.toscrape.com/page/2/',
-        	]
-        	for url in urls:
-            		yield scrapy.Request(url=url, callback=self.parse)
-
-    	def parse(self, response):
-       		print ("response url: %s " % (response.url))
-		page = response.url.split("/")#[-2]
-        	print page
-		#print ("page: %s" % (page))
-		filename = 'quotes-%s.html' % page
-        	with open(filename, 'wb') as f:
-            		f.write(response.body)
-        	self.log('Saved file %s' % filename)'''
+			yield scrapy.Request(link, self.parse)'''
