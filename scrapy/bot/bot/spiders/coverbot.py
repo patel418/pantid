@@ -13,23 +13,20 @@ class Bot(scrapy.Spider):
 	# Create a set that'll keep track of ids we've crawled
 	crawled_ids = set()
 	def start_requests(self):
-		#url = "https://www2.hm.com/en_us/men/products/jeans/skinny.html?sort=stock&image-size=small&image=model&offset=0&page-size=72"
-		#url = "https://www2.hm.com/en_us/men/products/jeans/super-skinny.html?sort=stock&image-size=small&image=stillLife&offset=0&page-size=36"
-		#url = "https://www2.hm.com/en_us/men/products/jeans/straight-leg.html"
-		url = "https://www.kohls.com/catalog/mens-straight-jeans-bottoms-clothing.jsp?CN=4294723349+4294737080+4294719454+4294719807+4294719810&icid=menjeans-VN1-straight&pfm=browse-pdp-breadcrumb%20p13n_control%20visual%20nav&kls_sbp=77952038899920252860576992828139209166"
-
+		#url = "https://www.levi.com/US/en_US/clothing/men/jeans/c/levi_clothing_men_jeans/facets/feature-fit/straight"
+		url = "https://www.buckle.com/mens/jeans/leg-opening:bootcut?page=6"
 		yield scrapy.Request(url, self.parse)
 
 	
 	
 	def parse(self, response): 
 		count = 0
-		#for image in response.css('body main div.sidebar-plus-content ul img::attr(data-altimage)').extract():	
-		for image in response.css("body div.pmpSearch_rightPanel ul a img::attr(src)").extract():
+		#for image in response.css("body div#root div.row_Z2vyUxT div.block_19rjgc img::attr(src)").extract():
+		for image in response.css("body div#wrapper main#content div.bottom-section a img::attr(src)").extract():
 			count = count+1
-			if (count % 2 != 0):
-				add = "https:"
-				image = add + image
-				print image
-				print count
-				yield ImgData(image_urls=[image])
+			#if (count % 2 != 0):
+				#add = "https:"
+				#image = add + image
+			print image
+			print count
+			yield ImgData(image_urls=[image])
